@@ -5,17 +5,21 @@ const Feedback = ({rating, handleClick}) => {
   return <button onClick={handleClick} >{rating}</button>
 }
 
+const StatisticsLine = ({name, value}) => <p>{name} {value}</p>
+
 const Statistics = ({good, bad, neutral}) => {
   const all = good+bad+neutral;
   const average = (sum, n) => sum / n;
   const percent = (n, d) => 100 * n / d;
 
-  return ([<p>good {good}</p>,
-    <p>neutral {neutral}</p>,
-    <p>bad {bad}</p>,
-    <p>all {all}</p>,
-    <p>average {average(good-bad, all)}</p>,
-    <p>percent {percent(good, all)}%</p>])
+  return ([
+    <StatisticsLine name="good" value={good}/>,
+    <StatisticsLine name="neutral" value={neutral}/>,
+    <StatisticsLine name="bad" value={bad}/>,
+    <StatisticsLine name="all" value={all}/>,
+    <StatisticsLine name="average" value={average(good-bad, all)}/>,
+    <StatisticsLine name="percent" value={percent(good, all) + "%"}/>,
+  ])
 }
 
 function App() {
