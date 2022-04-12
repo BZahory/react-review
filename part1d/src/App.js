@@ -37,7 +37,7 @@ function App() {
 
     <h1>statistics</h1>
 
-    <Statistics good={good} bad={bad} neutral={neutral}/>
+    {good+neutral+bad>0 ? <Statistics good={good} bad={bad} neutral={neutral}/> : <p>No feedback given</p>}
 
     </div>
   );
