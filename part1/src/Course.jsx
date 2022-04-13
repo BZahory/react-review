@@ -13,5 +13,6 @@ export default function Course({course}) {
     <Part part={course.parts[0].name} exercises={course.parts[0].exercises} />,
     <Part part={course.parts[1].name} exercises={course.parts[1].exercises} />,
     <Part part={course.parts[2].name} exercises={course.parts[2].exercises} />,
+    <p style={{fontWeight:'bold'}}>Number of exercises {course.parts[0].exercises + course.parts[1].exercises + course.parts[2].exercises}</p>,
   ];
 }
