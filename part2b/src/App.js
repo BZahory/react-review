@@ -20,7 +20,9 @@ const App = () => {
           <button
             onClick={(event) => {
               event.preventDefault();
-              setPersons((p)=>[...p, { name: newName }]);
+              persons.find(o => o.name === newName) == undefined
+                ? setPersons((p) => [...p, { name: newName }])
+                : alert(`${newName} is already added to phonebook`);
             }}
             type="submit"
           >
