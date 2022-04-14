@@ -4,12 +4,23 @@ const App = () => {
   const [persons, setPersons] = useState([{ name: "Arto Hellas" }]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
+  const [filter, setFilter] = useState("");
+
+  let displayed = filter != "" ? persons.filter(person => person.name.includes(filter)) : persons;
 
   return (
     <div>
       <h2>Phonebook</h2>
       <form>
         <div>
+        <h1>Phonebook</h1>
+        filter shown with
+        <input
+            onChange={(event) => {
+              setFilter(event.target.value);
+            }}
+          />
+          <h1>add a new</h1>
           name:
           <input
             onChange={(event) => {
@@ -38,9 +49,8 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-      {persons.map((x) => (
-        <p key={x.name}>{x.name} {x.number}</p>
-      ))}
+      {displayed.map((x) => (
+    <p key={x.name}>{x.name} {x.number}</p>))}
     </div>
   );
 };
