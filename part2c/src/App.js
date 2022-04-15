@@ -38,8 +38,9 @@ const App = () => {
       <div>
         <h2>Numbers</h2>
         {displayed.length < 10 && displayed.length > 1 ? (
-          displayed.map((x) => <p key={x.name.common}>{x.name.common}</p>)
-        ) : (
+          displayed.map((x) => {return [<p key={x.name.common}>{x.name.common}</p>,
+          <button onClick={()=>{setFilter(x.name.common)}}>show</button>]}))
+        : (
           <div>
             {displayed.length > 1 ? (
               "Too many matches, specify another filter"
