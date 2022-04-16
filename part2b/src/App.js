@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from 'axios';
+import peopleService from './services/peopleService';
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -8,7 +9,7 @@ const App = () => {
   const [filter, setFilter] = useState("");
   
   useEffect(() => {
-    axios.get('http://localhost:3001/persons').then((response)=>{
+    peopleService.getAll().then((response)=>{
       console.log(response.data);
       setPersons(response.data)});
   }, [])
@@ -35,7 +36,7 @@ const App = () => {
   const handleAdd = (newName, newNumber) => {
     const newPerson = { name: newName, number: newNumber };
     setPersons((p) => [...p, newPerson ]);
-    axios.post("http://localhost:3001/persons", newPerson);
+    peopleService.create(newPerson);
 
   }
 
