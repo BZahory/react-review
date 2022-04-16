@@ -6,7 +6,7 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filter, setFilter] = useState("");
-
+  
   useEffect(() => {
     axios.get('http://localhost:3001/persons').then((response)=>{
       console.log(response.data);
@@ -32,6 +32,13 @@ const App = () => {
     );
   };
 
+  const handleAdd = (newName, newNumber) => {
+    const newPerson = { name: newName, number: newNumber };
+    setPersons((p) => [...p, newPerson ]);
+    axios.post("http://localhost:3001/persons", newPerson);
+
+  }
+
   const addContact = () => {
     return (
       <form>
@@ -53,7 +60,7 @@ const App = () => {
           onClick={(event) => {
             event.preventDefault();
             persons.find((o) => o.name === newName) == undefined
-              ? setPersons((p) => [...p, { name: newName, number: newNumber }])
+              ? handleAdd(newName, newNumber)
               : alert(`${newName} is already added to phonebook`);
           }}
           type="submit"
