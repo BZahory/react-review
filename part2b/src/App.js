@@ -73,10 +73,12 @@ const App = () => {
   };
 
   const deleteContact = async (targetName) => {
+    if(window.confirm("Are you sure you want to delete " + targetName)){
     await peopleService.deleteById(persons.find((o) => o.name === targetName).id)
     peopleService.getAll().then((response)=>{
       console.log(response.data);
       setPersons(response.data)});
+    }
   }
 
   const displayContacts = () => {
