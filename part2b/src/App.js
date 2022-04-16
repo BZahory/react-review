@@ -67,8 +67,7 @@ const App = () => {
   const handleSameAdd = (name, newNumber) => {
     if (window.confirm("Are you sure you want to replace " + name)) {
       const target = persons.find((o) => o.name === name);
-      peopleService.update(target.id, { ...target, number: newNumber });
-      window.location.reload();
+      peopleService.update(target.id, { ...target, number: newNumber }).then(window.location.reload()).catch(setAlert("Already deleted " + name));
     }
   };
 
@@ -112,15 +111,15 @@ const App = () => {
       peopleService.getAll().then((response) => {
         console.log(response.data);
         setPersons(response.data);
+      setAlert("deleted " + targetName);
       });
     }
-    setAlert("deleted " + targetName);
   };
 
   const displayContacts = () => {
     return (
       <div>
-        {alert !== "" && <Notification message={alert} />}
+        {alert !== "" && <Notification className="error" message={alert} />}
         <h2>Numbers</h2>
         {displayed.map((x) => (
           <div>
