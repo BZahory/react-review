@@ -40,6 +40,14 @@ const App = () => {
 
   }
 
+  const handleSameAdd = (name, newNumber) => {
+    if(window.confirm("Are you sure you want to replace " + name)){
+      const target = persons.find((o) => o.name === name);
+      peopleService.update(target.id, {...target, number:newNumber});
+      window.location.reload();
+    }
+  }
+
   const addContact = () => {
     return (
       <form>
@@ -62,7 +70,7 @@ const App = () => {
             event.preventDefault();
             persons.find((o) => o.name === newName) == undefined
               ? handleAdd(newName, newNumber)
-              : alert(`${newName} is already added to phonebook`);
+              : handleSameAdd(newName, newNumber);
           }}
           type="submit"
         >
