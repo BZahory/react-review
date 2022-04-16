@@ -72,14 +72,24 @@ const App = () => {
     );
   };
 
+  const deleteContact = async (targetName) => {
+    await peopleService.deleteById(persons.find((o) => o.name === targetName).id)
+    peopleService.getAll().then((response)=>{
+      console.log(response.data);
+      setPersons(response.data)});
+  }
+
   const displayContacts = () => {
     return (
       <div>
         <h2>Numbers</h2>
         {displayed.map((x) => (
+          <div>
           <p key={x.name}>
             {x.name} {x.number}
           </p>
+          <button onClick={()=>deleteContact(x.name)}>delete</button>
+          </div>
         ))}
       </div>
     );
