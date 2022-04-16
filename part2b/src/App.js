@@ -1,23 +1,45 @@
 import { useState, useEffect } from "react";
-import axios from 'axios';
-import peopleService from './services/peopleService';
+import axios from "axios";
+import peopleService from "./services/peopleService";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filter, setFilter] = useState("");
-  
+  const [alert, setAlert] = useState("");
+
   useEffect(() => {
-    peopleService.getAll().then((response)=>{
+    peopleService.getAll().then((response) => {
       console.log(response.data);
-      setPersons(response.data)});
-  }, [])
+      setPersons(response.data);
+    });
+  }, []);
+
+  useEffect(() => {
+    const timeId = setTimeout(() => {
+      // After 3 seconds set the show value to false
+      setAlert("");
+    }, 3000)
+
+    return () => {
+      clearTimeout(timeId);
+    }
+  }, [alert]);
+
 
   let displayed =
     filter != ""
       ? persons.filter((person) => person.name.includes(filter))
       : persons;
+
+  const Notification = ({ message }) => {
+    if (message === null) {
+      return null;
+    }
+
+    return <div className="error">{message}</div>;
+  };
 
   const filterContacts = () => {
     return (
@@ -35,18 +57,20 @@ const App = () => {
 
   const handleAdd = (newName, newNumber) => {
     const newPerson = { name: newName, number: newNumber };
-    setPersons((p) => [...p, newPerson ]);
     peopleService.create(newPerson);
-
-  }
+    peopleService.getAll().then((response) => {
+      console.log(response.data);
+      setPersons(response.data);
+    });
+  };
 
   const handleSameAdd = (name, newNumber) => {
-    if(window.confirm("Are you sure you want to replace " + name)){
+    if (window.confirm("Are you sure you want to replace " + name)) {
       const target = persons.find((o) => o.name === name);
-      peopleService.update(target.id, {...target, number:newNumber});
+      peopleService.update(target.id, { ...target, number: newNumber });
       window.location.reload();
     }
-  }
+  };
 
   const addContact = () => {
     return (
@@ -81,24 +105,29 @@ const App = () => {
   };
 
   const deleteContact = async (targetName) => {
-    if(window.confirm("Are you sure you want to delete " + targetName)){
-    await peopleService.deleteById(persons.find((o) => o.name === targetName).id)
-    peopleService.getAll().then((response)=>{
-      console.log(response.data);
-      setPersons(response.data)});
+    if (window.confirm("Are you sure you want to delete " + targetName)) {
+      await peopleService.deleteById(
+        persons.find((o) => o.name === targetName).id
+      );
+      peopleService.getAll().then((response) => {
+        console.log(response.data);
+        setPersons(response.data);
+      });
     }
-  }
+    setAlert("deleted " + targetName);
+  };
 
   const displayContacts = () => {
     return (
       <div>
+        {alert !== "" && <Notification message={alert} />}
         <h2>Numbers</h2>
         {displayed.map((x) => (
           <div>
-          <p key={x.name}>
-            {x.name} {x.number}
-          </p>
-          <button onClick={()=>deleteContact(x.name)}>delete</button>
+            <p key={x.name}>
+              {x.name} {x.number}
+            </p>
+            <button onClick={() => deleteContact(x.name)}>delete</button>
           </div>
         ))}
       </div>

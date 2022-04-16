@@ -18,14 +18,9 @@
   },
   "persons": [
     {
-      "name": "Mary Poppendieck",
-      "number": "123",
-      "id": 1
-    },
-    {
-      "name": "Mary",
-      "number": "123",
-      "id": 2
+      "name": "testc",
+      "number": "1234",
+      "id": 3
     }
   ]
 }
